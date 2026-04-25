@@ -1,0 +1,19 @@
+.DS_Store
+
+# Large data files - excluded from repo
+data/
+
+# Training run artifacts
+runs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Office temp files
+~$*
+
+# Old git directory
+.git.old/

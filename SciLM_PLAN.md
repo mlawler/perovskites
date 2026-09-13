@@ -256,3 +256,208 @@ SMI-TED's pooled formulation embedding with SciLM's.
   runs (standard practice for a transformer of this size is 1e-4 to 5e-4 with
   AdamW and a warmup-then-cosine-decay schedule, but we should confirm
   empirically rather than commit now).
+
+## 11. Scope: what "Scientific Language Model" should mean
+
+The v1/v2 architecture is the minimum viable SciLM: any-to-any masked prediction
+over **one** formulation. The full vision of a scientific language model for
+electrolytes is broader: it should reason over **sequences of formulations** the
+way a chemist reads a paper or a lab notebook — *"given these five recipes and
+their measured σ at these temperatures, propose a sixth recipe with higher σ."*
+
+This kind of in-context, example-conditioned generation is a v3 research project,
+not a tweak. The current model cannot do it for four concrete reasons:
+
+1. **Fixed single-formulation context.** The transformer attends over exactly
+   `n_pairs × L = 8 × 41 = 328` token positions, all encoding one formulation.
+   `E_slot` has 8 IDs and `E_pos` has 41 — there is no embedding to distinguish
+   "formulation #2" from "formulation #1" in a longer context. Concatenating
+   would produce a single chimeric formulation with 12 components.
+2. **No autoregressive head.** The model is encoder-only, with independent
+   per-position token logits. It cannot generate a coherent novel SMILES; it
+   can only return a probability distribution at each masked position.
+3. **Training distribution is single-example.** Each sample seen in training is
+   one formulation with a random subset masked. The model has never been
+   exposed to "K formulations, the K-th masked", so there is no in-context
+   behavior to elicit even with creative prompting.
+4. **Per-kind scalar heads assume one slot per kind.** `W_num` has three heads
+   (component %, temperature, ionic) and is indexed by `pair_kind`, which is a
+   single integer per pair. Generalizing requires either repeating the heads
+   per formulation or moving to a single shared head with a kind embedding.
+
+### What v3 would require
+
+- **Hierarchical sequence layout.** A flat sequence of `K × n_pairs × L` tokens
+  with three orthogonal embeddings: formulation_id (∈ `1..K`), slot_id, position.
+- **Multi-example training data.** Construct training sequences as
+  *"K formulations from the same chemistry family or paper, with the K-th
+  masked in the slots we want the model to predict."* The "from the same
+  family" condition is what makes the prior examples informative — without
+  it, the model learns to ignore the in-context part.
+- **Generative head.** Either (a) an autoregressive decoder that emits SMILES
+  token-by-token conditioned on the encoder context, or (b) keep the
+  encoder-only design and pair it with an external SMILES validator (e.g.,
+  RDKit) plus beam search over masked-token predictions.
+- **Targeted training objective.** A "predict-better-σ" objective rather than
+  generic masked-scalar prediction — e.g., construct sequences where
+  σ-of-formulation-K > max(σ-of-formulations-1..K-1), so the model learns the
+  *trend* and not just the mean.
+
+### Inverse-design paths that work with v2 today
+
+Without retraining, three workflows already exploit v2 for "find a formulation
+with high σ":
+
+1. **Forward screening.** Enumerate or sample candidate formulations, predict
+   σ at fixed T, rank. Trivially parallel; the model evaluates ~100/s on CPU.
+   Defensible because it tests v2 only on the task it was trained for.
+2. **Gradient ascent on mole fractions.** Hold SMILES tokens fixed, treat the
+   `pct` scalars as continuous, backprop ∂σ_pred/∂pct, project onto the
+   simplex (mole fractions sum to 100 %). Optimizes *concentration* of a known
+   recipe — this is what the Zohair paper does for its identified chemistries.
+3. **Single-formulation generative.** Mask salt and/or solvent slots, take
+   top-k token predictions per masked position, compose, validate with RDKit.
+   Limited because token logits are independent per position, but works for
+   short common motifs and gives a discrete shortlist of synthesizable
+   candidates.
+
+Path 1 is the most defensible "first experiment." Path 3 is the closest current
+proxy to the v3 in-context-design capability above.
+
+## 12. Application: SciLM-for-perovskites alongside Clancy's PAL 2.0 (Genesis proposal, Apr 2026)
+
+The DOE Genesis Mission proposal (Phase I, 9 months, focus topic 1-B) pairs
+this group's SciLM work with Paulette Clancy's PAL 2.0 Bayesian-optimization
+framework. The perovskite SciLM proposed for Phase I is the **v3 architecture
+from §11** — multi-formulation K-length context window, any-to-any masked
+prediction, generative inverse design — applied to (composition, processing,
+multi-modal characterization, post-irradiation properties) for radiation-hard
+metal-halide perovskites. The proposal text itself is non-specific about
+v2/v3 internals; it commits only to multi-modal capability (the first claim
+worked out below). The v2 electrolyte SciLM (8,745-row IBM SMI-TED-IC
+dataset, R² = 0.89 on test conductivity, ~6 h CPU training) is the
+preliminary-data demonstration that the architectural family works on real
+chemistry.
+
+### Strategic framing
+
+PAL 2.0 is the senior collaborator's well-established BO method. Reviewer risk:
+"BO with a wrapper" is not Genesis-class novelty. SciLM is the proposal's
+distinctively *new* AI contribution — but pitched as **complementary** to PAL,
+not competing with it. The division of labor must rest on *what each method is
+mathematically equipped to do*, not on stage labels:
+
+- **PAL 2.0 (selection):** calibrated-uncertainty acquisition in continuous
+  low-dimensional parameterized spaces. Sample-efficient in small-data regime.
+  Owns the per-round next-experiment decision.
+- **SciLM (representation, prior, generation):** multi-modal data fusion,
+  pretraining-derived chemistry prior, generative proposal of structurally
+  novel candidates outside PAL's parameterization.
+
+PAL retains every operational role it has now. SciLM adds capabilities PAL
+categorically lacks. This is honored by leaving Fig. 1 (the closed-loop
+diagram) as Clancy's, and by stating BO's calibration advantage explicitly so
+the division of labor reads as *technically driven*, not political.
+
+### The three capability claims (proposal text, in `\draft{}`)
+
+What the proposal commits SciLM to *deliver*. Tight on capabilities,
+deliberately loose on operational structure (so we retain implementation
+flexibility):
+
+1. **Multi-modal data fusion.** Joint encoding of composition, processing, and
+   measured properties (XRD, SRPL, TRPL, BLDS, ionic conductivity, post-
+   irradiation observables) into a shared learned representation that replaces
+   PAL 2.0's hand-crafted physico-chemical fingerprint. Hooks Genesis 1-B
+   language verbatim ("integrate datasets from multi-modal synthesis,
+   characterization, and fabrication techniques").
+2. **Pretraining-derived prior over composition space.** Initialize from the
+   existing perovskite-property literature so PAL has a literature-informed
+   prior, which it currently does not (PAL's only prior is feature engineering
+   plus GP kernel/mean choices).
+3. **Generative proposer of search-space expansions.** Conditional generation
+   of structurally novel candidates (new additives, cation/anion combinations)
+   outside PAL's current discrete parameterization. Capability claim only —
+   **how** PAL consumes these proposals is left to implementation.
+
+Plus one architecture argument: all three capabilities are realized by a
+single any-to-any transformer trained once. Feasibility argument for Phase I.
+
+### Integration options (kept out of the proposal text on purpose)
+
+We discussed three integration mechanisms with PAL. The proposal text commits
+to none; this list is for our own planning:
+
+- **Option A — Chemistry-aware kernel in PAL.** Replace PAL's GP kernel with
+  Tanimoto-on-Morgan or a graph kernel so PAL's GP can natively evaluate
+  structurally novel candidates. Cleanest. Requires modifying PAL 2.0 (Clancy
+  buy-in needed). Flagged as Phase II ambition.
+- **Option B — Restrict SciLM proposals to PAL's parameterization.** No PAL
+  modification, but kills the "expand the search space" claim that makes
+  SciLM categorically different from BO. Rejected.
+- **Option C — Two-tier with structural proposals as outer channel.** SciLM
+  periodically proposes structurally novel candidates which, after curation,
+  are added to PAL's parameterization as new categorical levels for subsequent
+  rounds. No PAL modification. Realistic for 9 months. **This is our working
+  assumption for Phase I**, but "outer loop" and "curation" language was
+  removed from the proposal text per the user's "we only get one shot" rule —
+  the proposal commits to capabilities, not operational structure.
+
+### Capabilities that look operationally distinct from BO but aren't
+
+Pitfalls we considered and ruled out as proposal claims:
+
+- **"In-context / few-shot reasoning."** Sounds distinct from BO's
+  fit-then-predict surrogate but isn't, since BO's surrogate also predicts
+  round N+1 from rounds 1..N. The actually-distinct capability hiding behind
+  this label is *transfer learning from external corpora* — i.e., pretraining.
+  Counted under capability 2 (pretraining-derived prior) and not separately.
+- **"Generation = expanding the search space."** Philosophically yes. In
+  practice not collapsible to BO because (a) PAL 2.0's GP doesn't scale to
+  combinatorial molecular-graph spaces, (b) generative search spaces are
+  implicitly defined by the data distribution and can't be written down as a
+  parameterization, (c) inverse maps in chemistry are one-to-many and need
+  distribution sampling, not function maximization.
+
+### Compute budget allocated for this work
+
+500 GPU-hours on Kestrel (NREL) = 12,500 AU at 100 AU per GPU node-hour
+(4 H100s/node). Row 17 of `compute_costs/Genesis_Application_ACFoster_Apr2026.xlsx`.
+Covers v2-class perovskite-SciLM training runs (~30–80 GPU-hours per run),
+hyperparameter sweeps, inverse-design experiments, and active-learning
+retrains over the project's incoming ~10–15 samples/day. Does *not* cover
+foundation-model-style pretraining at PubChem scale (that would be a separate
+~2,000–5,000 H100-hour ask, scoped as future work).
+
+### Why this is deliverable in 9 months
+
+- **Architectural precedent exists**: SciLM v2 (electrolytes, R²=0.89 on
+  conductivity prediction) demonstrates the any-to-any architecture works on
+  a real chemistry dataset with from-scratch training in ~6 hours of CPU.
+  This is the preliminary data presented in the proposal and what makes the
+  v3 perovskite scope credible.
+- **Inverse-design precedent exists**: CascadesDB inverse problem (predict
+  undamaged-sample XRD from damaged-sample XRD) demonstrates the inverse-
+  prediction approach on a defect/damage dataset. Same problem shape as
+  inferring composition from radiation-hardness measurements.
+- **No PAL modifications required for Phase I** under Option C; PAL stays
+  exactly as Clancy delivers it.
+
+### Risk of v3 commitment
+
+v3 introduces a longer context window and multi-example in-context training
+distribution that v2 does not — both are research-project additions to the
+v2 stack (§11 lists what would change). 9 months is enough if the v3 work is
+focused on the K-length training distribution and standard transformer-scale
+hyperparameters, not on novel architectural research. If the proposal text
+remains non-specific about v2/v3, we keep the option to fall back to a v2-
+class deliverable in the perovskite domain without contradicting the
+narrative — useful insurance.
+
+### What would invalidate this plan
+
+If a reviewer or collaborator pushes for explicit operational integration
+(Option A) in Phase I, the budget and timeline tighten significantly: a
+chemistry-aware GP kernel inside PAL is a 2–3 month methodological project
+in its own right. Default response: hold the line that Phase I demonstrates
+the *capabilities* and Phase II integrates them.

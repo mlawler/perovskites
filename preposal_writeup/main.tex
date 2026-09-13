@@ -1,0 +1,463 @@
+ \documentclass[pgs]{DOE}
+% options = draft, pgs, endfloat, double, edit
+
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{subfiles}
+
+% Non-indented, bold, lightly colored text.
+%
+\usepackage[dvipsnames]{xcolor}
+\newcommand{\highlight}[1]{{\noindent \bf \color{RawSienna} #1}}
+\newcommand{\mnote}[1]{{\marginpar{\color{red} #1}}}
+\newcommand{\todo}[2]{{[\color{RawSienna} #1] \color{red} #2}}
+\newcommand{\myclearpage}{\clearpage}
+\newcommand{\draft}[1]{{\color{TealBlue} #1}}
+
+\graphicspath{
+  {/figs}
+  {../figs}
+  {../../figs}
+}
+
+\usepackage{csquotes}
+\usepackage{pdfpages}
+\usepackage{tcolorbox}
+\usepackage{ifplatform}
+\usepackage{wrapfig}
+
+\newtcolorbox{gapbox}[1]{
+colframe=blue!100,
+colframe=blue!100, 
+colback=blue!10, 
+coltitle=black,
+fonttitle=\bfseries,
+title={#1}
+}
+
+% The \iflinux works on Overleaf, but in MacOS I get the warning
+%
+% Package ifplatform Warning: 
+%    shell escape is disabled, so I can only detect \ifwindows.
+%
+% Check the operating system and then print a message to the log file
+
+\message{the operating system is}
+\iflinux
+  \message{linux (i.e., Overleaf)}
+\else
+  \message{not linux}
+\fi
+
+% Special commands
+
+\newcommand{\subs}[1]{_{\mathrm{#1}}}
+\newcommand{\supr}[1]{^{\mathrm{#1}}}
+\newcommand{\latin}[1]{\emph{#1}}
+
+% Turn off margin notes and myclearpage
+% Comment these out to turn them back on
+%
+% \renewcommand{\mnote}[1]{}
+% \renewcommand{\myclearpage}{}
+
+% ====== START MAIN DOCUMENT =======
+
+\setlength{\headheight}{13.59999pt}
+\addhead
+  {AI-Driven Materials Discovery to Power the Space Economy}
+  {Marohn, John}
+
+\newcommand{\propname}{(PS\textsuperscript{2})\textsuperscript{2}M}
+
+\begin{document}
+
+% =========================
+% PROJET SUMMARY / ABSTRACT
+% =========================
+
+\subfile{tex/Summary}
+\setcounter{page}{1} % reset page counter
+
+
+% ===================
+% COVER PAGE
+% ===================
+
+\clearpage
+\subfile{tex/Title}
+\setcounter{page}{1} % reset page counter
+
+% ===================
+\clearpage
+\section{Introduction}
+\mnote{1 page}
+% ===================
+
+
+
+%
+\begin{wrapfigure}{R}{0.4\textwidth}
+\centering
+\includegraphics[width=0.35\textwidth]{Figures/Genesis_1b_hero_fig.png}
+\caption{\label{fig1}Place holder overview graphic. Probably needs AI in it.}
+\end{wrapfigure}
+% 
+The space economy is predicted to expand significantly, and it will require equivalent amounts of on-board energy systems.
+The incumbent technology for power generation in space is based on silicon, which has a typical lifetime of only three years due to its susceptibility to damage from high-energy electrons and protons present in space. 
+Alternative technologies, like III-V absorbers, are more radiation-hard, but materials supply for that market is sold out for the next three years.
+This limited supply chain, and difficulty with scaling to large volume, drives up the price and accessibility of III-V materials. 
+
+Launch costs make it difficult and expensive to develop new materials robust enough to survive the extreme environment of space. 
+The advent of Artificial Intelligence (AI) and Machine Learning (ML) for materials discovery and processing has the potential to dramatically reduce the development time for new semiconductors aimed at space-power generation.
+The goals of this proposal are to use AI to create a new class of radiation-hard metal halide perovskite semiconductors and to quantify the advantage offered by AI in meeting this materials-development challenge. 
+
+Metal halide perovskite (MHP) semiconductor materials have shown significant promise for space power in the form of panels or nuclear batteries for compact high energy-density applications.
+MHP semiconductors have highly tunable bandgaps within their \ce{ABX3} composition. %
+%, and there exist numerous methods to control grain size, termination, and phase stability. 
+They exhibit unique resilience to radiation damage due to their mechanically ``soft'' crystal lattice.
+This softness allows the structure to dissipate energy from energetic particle impacts through dynamic fluctuations and precessional dynamics of the octahedral network, facilitating rapid, intrinsic self-healing \cite{kirmaniUnravelingRadiationDamage2024, miskinHowSoftMetal}.
+MHP materials can withstand three orders of magnitude higher proton dosage than silicon. 
+They are uniquely amenable to fabrication in space, using vacuum evaporation, which is difficult to imagine for incumbent technologies.
+Most studies on MHP materials for space are centered on materials that have been developed to survive the stressors of terrestrial applications. 
+Despite their promise, there are limited studies on how perovskite chemistry and processing affects radiation hardness, a critical attribute for space power.
+
+ 
+% The proposed work combines world leaders in AI, halide perovskite materials, and semiconductor characterization.  The Marohn group at Cornell University has developed a new high-throughput characterization method for measuring electronic and ionic (photo)conductivity.  The NLR team represents the deepest knowledge of halide perovskite synthesis, durability, and characterization in extreme environments in the world, and the Lawler and Clancy groups at Cornell and Johns Hopkins Universities, respectively, provide world-class computational expertise and capabilities for AI modeling and simulation for materials composition and process discovery. 
+
+This Phase I proposal brings together a team that is uniquely positioned to use AI/ML to accelerate the transition of MHPs from novel material discovery to rapid scale-up, integration, and deployment.
+The central component of this effort is \highlight{Clancy}'s uniquely powerful and interpretable Bayesian-optimization framework.
+The framework incorporates inputs from both ab initio calculations and experimental measurements, can jointly optimize for multiple target material properties with uncertainty quantification, and works well with small datasets.
+\highlight{Lawler} has pioneered the use of large-language models to optimize materials growth.
+\highlight{Marohn} has developed unique non-contact electrical scanning probe methods for quantifying both electronic and ionic charge density and conductivity.
+The NLR team represents the deepest knowledge of halide perovskite synthesis, durability, and characterization in extreme environments in the world, and \highlight{Wheeler} and \highlight{Witteck} have developed a state-of-the-art metal-halide perovskite evaporation deposition system.
+\highlight{Luther} leads NLR's effort to developed radiation-hard perovskites.
+
+% ==========================
+\myclearpage
+\section{Project Objectives}
+\mnote{0.5 page}
+% 
+% Project Objectives (approximately 0.5 page): Provide a clear and concise statement of
+% the specific objectives of the proposed project. Address how the objectives align with the
+% chosen focus topic and lead to an AI advantage.
+%
+% ==========================
+
+Our Phase I goal is to use AI/ML to accelerate the development of radiation-hard semiconductors for space power applications by using predictive algorithms to reveal the optimal compositions and processing conditions yielding radiation-hard MHPs. 
+The proposed work directly addresses the DOE Genesis project's aim to ``accelerate scientific discovery and research and development (R\&D) workflows using novel artificial intelligence (AI) models and frameworks'' and Challenge Area 1, Re-envisioning Advanced Manufacturing and Industrial Productivity, Topic B, AI-Driven Materials Processing. The goal of 1-B is to ``Develop AI models to integrate datasets from multi-modal synthesis, characterization, and fabrication techniques with high-throughput simulations and predictive theory, leveraging the data-rich parameter space, including diverse synthetic methodologies and bottom-up to top-down approaches, to accelerate the transition from novel material discovery to rapid scale-up, integration, and deployment.''
+
+[\textcolor{red}{PC added some text to this part but these are not objectives. Perhaps move this text somewhere else.]}
+We will leverage promising initial data \textcolor{red}{(how?)}, measure optoelectronic properties, irrand \textcolor{red}{(run??)} simulations in conjunction with world-class unique capabilities and expertise in metal halide perovskites to supply training data to AI algorithms. Bayesian optimization algorithms will then determine predictions of more radiation-hard semiconductors, which can then be synthesized and tested. These data are then fed back to the surrogate model, new predictions of better performing perovskites will be generated  and the iterative cycle begins again. Depending on the speed of the {make-test-refine predictions} we would hope to complete three iterations before the go/no-go gate after 6 months.
+
+
+
+\begin{tcolorbox}[colframe=gray, colback=gray!10, coltext=black]
+After six months of research, we will predict radiation-hard semiconductors using Bayesian optimization tools with validation of the accuracy of these predictions along the iterative path using experimental measurements of film morphology, chemical composition, and steady-state and transient electronic conductivity and ionic conductivity.
+\end{tcolorbox}
+
+
+
+% =====================================
+\myclearpage
+\section{Proposed Research and Methods}
+\mnote{1.5 page}
+%
+% Proposed Research and Methods (approximately 1.5 pages): Provide a clear research
+% plan for a nine-month project and describe the proposed activities and methods. Include
+% enough technical details to evaluate the impact of the proposed activity. For each
+% activity, indicate the responsibility of the key investigator(s) and the associated budget.
+% If the proposed application is building on an existing, currently funded DOE project,
+% describe how the submitted application leverages that work and is distinct from the
+% existing funding.
+%
+% =====================================
+
+% ----------
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{Figures/perovskite_space_v2.png}
+\caption{\label{fig3}The closed-loop active learning cycle accelerates the discovery of radiation-hard perovskites. An AI framework utilizing XGBoost and PAL 2.0 predicts optimal material parameters. Automated robotic spin-coating synthesizes a diverse sample library by systematically varying composition and morphology. Multi-modal characterization, including XRD, SRPL, TRPL, and BLDS is followed by high-energy electron (1–5 MeV) and proton (1–2 MeV) radiation testing follwing AIAA S-111A protocols \cite{AIAA2014}. Post-irradiation characterization quantifies defect formation and intrinsic structural recovery. The system feeds this empirical data back into the surrogate model to continuously refine subsequent material predictions.}
+\end{figure}
+% ----------
+
+\subsection{\noindent AI/ML approaches}.
+Bayesian optimization studies are particularly well-suited to considering even small datasets, offering uncertainty quantification, and allowing the incorporation of physico-chemical information.
+We have a highly interpretable Bayesian code base called PAL 2.0 that we developed [refs] with a feature engineering ``front end'' to provide fingerprints of the correlations of specific properties with a user-chosen objective.
+We have used PAL 2.0 successfully to study metal halide perovskites, polymers, metal alloys, and metal organic frameworks. Our proposed studies will be  conducted as either a single or multiple  optimization or in a ``closed loop'' mode.
+The approach can be used either with experimental data as input or with ``synthetic'' computational data. 
+PAL 2.0 will play a large role in Thrust/Objective XXX, for example, to sift through potential material compositions, structures, and electronic interactions to optimize XXX. 
+In each iteration, PAL will make predictions of better materials based on its existing training data, which will then be fabricated and tested and the outcomes added to the data base. 
+PAL then makes updated predictions of even better materials for the chosen objective (target) and the “closed loop” cycle begins again and continues until the target has been reached (Fig. PC1). 
+As an example of the success of our past work, we designed the best alloy for an orthopedic screw that is as strong as possible but as little corrosive as possible.
+As iterations proceed (from round 1 to round 3), we get closer to achieving both objectives for an alloy that is different from, and better than, the ones in the training data (Fig. PC2). \\
+
+\draft{The Lawler group complements PAL 2.0 with a transformer-based ``Scientific Language Model'' (SciLM) that fuses multi-modal characterization (XRD, SRPL, TRPL, BLDS, ionic conductivity) into learned features supplied to PAL---directly addressing Genesis Topic 1-B's call to integrate multi-modal datasets---and is pretrained on the existing perovskite literature to provide PAL a learned chemistry prior absent from hand-crafted features alone.
+SciLM also functions as a generative proposer of structurally novel candidates---new additives, cation/anion combinations---outside PAL's current discrete parameterization, providing a learned source of search-space expansions.}
+
+% \subsubsection{\noindent Machine learned interatomic potentials (MLIPs)  (Clancy group, JHU)}.
+% Paulette can write a section on this as needed.
+
+% ---------------
+%
+\begin{figure}
+\begin{minipage}{0.63\textwidth}
+    \centering
+    \vspace{-0.5cm}
+    \includegraphics[width=\textwidth]{Figures/Inverse_solution_fig.pdf}
+\end{minipage}
+\hfill
+\begin{minipage}{0.37\textwidth}
+    \caption{\label{fig2}Solving the inverse problem: predicting undamaged samples from X-ray diffraction (XRD) on damaged samples in the CascadesDB dataset.  
+    (a) Architecture: a multilayer perceptron (MLP) fed to a 1-D convolutional neural network. 
+    (b) Mean square error (MSE) loss for training and validation sets. 
+    (c) The trained model predicts XRDs from categorical (material composition, lattice type) and continuous (lattice parameter, temperature, PKA energy, sample volume) inputs. 
+    (d) Performance of predicting sample properties from damaged sample XRDs. 
+    Low MSE guarantees prediction of PKA energy and box volume, but not lattice parameter and temperature.}
+\end{minipage}
+\vspace{-20pt} % Manual adjustment
+\end{figure}
+%
+% \begin{wrapfigure}{l}{0.4\textwidth}
+% \centering
+% \includegraphics[width=0.4\textwidth]{Figures/Inverse_solution_fig.pdf}
+% \end{wrapfigure}
+%
+% ---------------
+
+\subsection{Sample fabriction}.  
+We will prepare samples by both spin casting and evaporation.  
+Spin casting is suitable for quickly creating \si{\centi\meter\squared} proof-of-concept devices on metal-coated glass substrates with varying stoichiometry while evaporation is a higher fidelity but slower process that can be scaled to \si{\meter\squared} devices and applied directly in space.
+Spin coating suffers from irreproducibility but this irreproducibility has been well tamed at NLR by employing distinct dry boxes for solution making and spin casting, using gas quenching instead of solvent quenching in the spin-casting step, and using robot automation; we will use spin casting to quickly generate samples for radiation-hardness testing and AI/ML training and optimization.
+In parallel, we will prepare samples via vacuum evaporation; NLR has developed a robust vacuum evaporation process with control parameters including temperature, pressure, and gas flux that are highly reproducible and automatically logged, providing an even higher fidelity parameter space for AI/ML training and optimization.
+
+NLR will first synthesize an array of MHP samples across a diverse compositional library using automated robotic spin-coating. 
+The generated films explore specific mixed-cation and mixed-halide systems, such as Cs$_{x}$FA$_{1-x}$Pb(I$_{y}$Br$_{1-y}$)$_3$.
+The robotic platform systematically varies the A-site cation and X-site halide ratios alongside specific passivation additives to control grain boundary termination. 
+The AI models dictate this initial sampling using a design-of-experiments approach, paving the way for active learning loops.
+
+\subsection{Property characterization}.
+The NLR team will characterize samples using optical microscopy, X-ray diffraction (XRD), spectrally resolved photoluminescence (SRPL), and time-resolved photoluminescence (TRPL). 
+Cornell will evaluate the samples using energy-dispersive X-ray spectroscopy (XRD) and scanning electron microscopy (SEM), and  using electrical scanning probe methods to determine electronic and ionic conductivity in the dark and under illumination.
+Broadband local dielectric spectroscopy (BLDS) determines electronic and ionic charge density and conductivity (hence mobility) while friction versus time (nc-FvT) and phase-kick electric force microscopy measurements (pk-EFM) yield the lifetime of photoinduced ionic and electronic carriers, respectively.
+
+\subsection{Radiation testing and follow-up characterization}.  
+NLR will conduct rigorous irradiation testing on the samples. 
+Exposing the materials to high-energy electrons and protons replicates extreme space environments and deconvolutes the mechanisms of damage and healing. 
+Electron testing will be performed externally at NEO Beam Alliance Inc. 
+In-house facilities at NLR handle the proton testing to enable an in-depth analysis of radiation effects on the MHPs. 
+The testing methodology incorporates established AIAA S-111A protocols \cite{AIAA2014, hanAdvancingPerovskiteSolar2025} and utilizes guided energy-tuned dual irradiation techniques \cite{kirmaniUnravelingRadiationDamage2024, kirmaniCountdownPerovskiteSpace2022}.
+After stress-testing, the Cornell and NLR teams will re-assess the structural and optical properties. 
+Cornell evaluates the materials over several days to quantify long-term defect healing and changes in ionic conductivity.
+
+\subsection{AI/ML feedback loop}.  
+We then feed this rich, multi-modal dataset into our AI models.
+The collected data encompasses synthesis parameters, baseline properties, radiation-induced defect formation, and subsequent healing rates. 
+We will use Bayesian optimization, via Clancy's well-tested and successful PAL2.0 algorithm, to navigate the vast MHP compositional space, avoiding traditional trial-and-error.
+The AI models will actively learn from the experimental feedback loop to predict and identify the most radiation-hard perovskite chemistries.
+This produces a ranked list of candidate compositions or processing variables that can be tested in the next iteration of the ``closed loop.''
+
+
+% ===============================
+\myclearpage
+\section{Data Sources and Models}
+\mnote{0.5 page}
+%
+% Data Sources and Models (approximately 0.5 page): Describe which existing or new
+% data sources will be used. Address your team’s access to the data. If applicable, indicate
+% which AI models or frameworks will be used in your proposed project. Do not include a
+% description of computing resources and the means by which you will secure an allocation
+% timed to your performance period; this should be done in Appendix 2.
+% 
+% NOTES: 
+% - Electron testing at Neobeam ($10k per run)
+% - Most testing using electron beam testing is empirical for GaAs, 
+%   which does not do a good job capturing radiation hardness of perovskites. 
+% 
+% ===============================
+
+\subfile{tex/Section-V-table}
+
+Data will be generated specifically for this project.
+After growth, we will perform a baseline assessment of material properties.
+The resulting MHP films will be subjected to proton irradiation and electron irradiation (\SI{e15}{\per\square\centi\meter}) and their materials properties reassessed. 
+We list planned measurements in Table~\ref{table:sources} along with the data produced.
+
+% =====================================
+\myclearpage
+\section{Milestones in the Nine Months}
+\mnote{1 page}
+%
+% Milestones in the Nine Months (approximately one page): Provide a list of clearly
+% defined and measurable milestones of the project.
+% 
+% =====================================
+Aggressive timetable
+
+\begin{table}[h]
+\centering
+\caption{Phase I Project Milestones}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{p{0.15\linewidth}p{0.8\linewidth}}
+\hline
+\textbf{Timeline} & \textbf{Technical Milestone} \\
+\hline
+\textbf{Month 1--3} & NLR synthesizes the initial library of 160 baseline MHP films using robotic spin-coating. Cornell completes pre-irradiation XRD, TRPL, and BLDS characterizations. \\
+& AI Team does.. \\
+\hline
+\textbf{Month 4--6} & Complete the first round of electron and proton irradiations. The team feeds the post-irradiation characterization data into the PAL 2.0 Bayesian optimization framework. AI Team executes the first active learning loop to predict the next generation of optimal ABX3 stoichiometries. \\
+\hline
+\textbf{Month 7--9} & NLR synthesizes AI-predicted high-hardness MHP candidates. Complete final cycle of radiation testing. Add new data into the database and retrain the AI surrogate model. Make new AI predictions and the cycle restarts. \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+
+% ===============================
+\myclearpage
+\section{Decision Gate Metrics}
+\mnote{0.5 page}
+%
+% Decision Gate Metrics (approximately 0.5 page): Provide specific metrics that can be
+% used for the evaluation of Phase I go/no go decision. DOE encourages the development
+% of metrics to identify AI advantage. One such metric could include scaling behavior
+% which shows increasing performance as additional data, computing, and/or other
+% resources are applied. Quantitative statements enabling transformative science and
+% engineering through AI are preferred.
+ 
+% ===============================
+
+The six-month decision gate requires quantitative proof of both the AI framework's predictive power and the experimental workflow's throughput. The team must achieve three specific technical targets to validate the Phase I approach.
+
+\begin{enumerate}
+    \item \textbf{Predictive Accuracy:} The Bayesian optimization model predicts post-irradiation ionic conductivity changes with less than XX\% error compared to the experimental validation data.
+    \item \textbf{Workflow Throughput:} The automated robotic platform and multi-modal characterization pipeline successfully complete at least two full active learning loops. 
+    \item \textbf{Material Resilience:} The AI-driven workflow identifies a minimum of three MHP compositions retaining greater than 80\% of their initial photoluminescence lifetime and ionic conductivity following a baseline 10$^{13}$ protons/cm$^2$ radiation dose.
+\end{enumerate}
+
+% \newpage
+
+% \begin{enumerate}
+% \item Cornell University.  (a) Contact: Prof. John Marohn, Chemistry and
+% Chemical Biology and Materials Science and Engineering.  Role:
+% PI. Prepare lead-halide semiconductor samples by solution processing
+% and characterize their electronic and ionic conductivity using unique
+% electric force microscope measurements. (b) Contact: Prof. Michael
+% Lawler, Physics.  Role: Senior/key person.  Develop and apply
+% large-language models to optimize the growth of materials.
+% \item The Johns Hopkins Applied Physics Laboratory.  Contact:
+% Prof. Paulette Clancy.  Commitment: Email and phone text agreement.
+% Role: Senior/key person.  Develop and apply machine learning
+% approaches to advance materials discovery and materials processing,
+% including Bayesian optimization and active learning.
+% \item DOE National Laboratory of the Rockies (formerly DOE NREL).
+% Contact: (a) Dr. Lance Wheeler and (b) Dr. Robert Witteck.
+% Commitment: Email agreement.  Role: Senior/key persons. Prepare
+% lead-halide semiconductor samples by vapor deposition and characterize
+% them by time-resolved photoluminescence and time-resolved microwave
+% conductivity.
+% \end{enumerate}
+
+% \section{Summary}
+
+% The proposed work directly addresses the DOE Genesis project's aim to ``accelerate scientific discovery and research and development (R\&D) workflows using novel artificial intelligence (AI) models and frameworks''.
+
+% The proposed work specifically addresses Challenge Area 1, Reenvisioning Advanced Manufacturing and Industrial Productivity, Topic A, AI-Driven Materials Processing.
+% The goal of 1-A is to ``Develop AI models to integrate datasets from multi-modal synthesis, characterization, and fabrication techniques with high-throughput simulations and predictive theory, leveraging the data-rich parameter space, including diverse synthetic methodologies and bottom-up to top-down approaches, to accelerate the transition from novel material discovery to rapid scale-up, integration, and deployment.''
+
+% We will develop and deploy AI/ML models to accelerate the transition of metal halide perovskite (MHP) semiconductors from lab to factory.
+% MHPs are solution-processable semiconductors with high defect tolerance and excellent electronic properties.  
+% However, the materials show unprecedented light-induced photo-ionic conductivity, with illumination creating metastable vacancies and interstitials \cite{Tirmzi2017jan}.  % <= A reference
+% Ionic conductivity is deleterious to thin-film transistors and solar cells yet is potentially useful for neuromorphic computing, photocatalysis, and spintronics. 
+% In spite of an enormous worldwide effort to study MHPs, we presently lack the ability to control the ionic conductivity of as-fabricated MHP films. 
+% We propose to use AI/ML to surmount this roadblock to the commercialization of MHP devices.
+
+% Many groups are trying to use AI/ML to find processing conditions yielding improved device performance metrics (i.e. transistor threshold voltage, solar cell lifetime).  
+% This approach has been only modestly successful, and does not teach us why the material composition and processing conditions were optimal.  
+% A much better approach is to include measured material properties in the machine learning input.
+% With this expanded approach, machine learning will teach us why some materials make better devices than others. 
+% This physical insight is essential because there are simply too many combinations of elements in the period table to test by trial and error.
+% The materials processing space is likewise to large to sample exhaustively.
+
+% Our novel AI/ML approach will ultimately yield the first comprehensive understanding of photo-ionic conductivity in solution- and vapor-deposited metal-halide perovskites.
+% The proposed work will serve as a high-profile test case of a new, transformative paradigm in AI-driven materials processing.
+
+% We propose a Phase I team, with a budget of \$750k for nine months.
+% We bring to the proposal a significant body of prior work, and three ongoing collaborations.
+
+% Clancy and Marohn recently completed a 4-year DOE BES Synthesis and Processing grant.
+% In this project Clancy invented a novel AI/ML Bayesian approach to materials optimization that uniquely weighs inputs from both ab initio theory and experimental data. 
+% Marohn and collaborators invented novel high-throughput scanning probe measurements that can uniquely quantify steady-state and transient ionic and electronic conductivity.
+% In collaboration with DOE NREL collaborators, Marohn's team developed a novel gas-quenching apparatus for preparing state-of-the-art MHP films.
+% Clancy and Marohn have one joint publication in print and another under review, and they interact regularly in biweekly meetings.
+ 
+% As part of this recent DOE grant, Marohn's PhD student Virginia McGhee spent a semester working in site at DOE NREL with Wheeler and Witteck.
+% Together they developed a novel method for evaporatively depositing MHP films.
+% The team continues to interact in biweekly meetings.
+% This Cornell-NREL collaboration resulted in one paper in preparation.
+
+% Finally, Marohn and Lawler recently received a starter grant from the Cornell Atkinson Center for Sustainability.
+% The goal of this collaboration is to use Artificial Intelligence and Machine Learning to accelerate the translation of lead-halide perovskites from the lab to the factory.
+
+% A Phase I grant must demonstrate results in 6 months.
+% The proposed team will be able to hit the ground running, so to speak.
+% Clancy and Marohn's prior DOE grant led to over 160 samples created by spin casting and vacuum evaporation under various processing conditions.
+% These samples form an excellent starting point for Phase I work.
+
+% \section{We will authentically use artificial intelligence}
+
+% The proposed work is an outstanding use case for AI/ML.
+% The MHP chemical space and processing space is simply too large too sample by trial and error.  
+% Moreover, the proposed work directly resolves a persistent deficiency in existing AI/ML approaches to materials optimization --- their inability to provide physical insight.
+
+% The team is uniquely well positioned to accelerate AI-driven materials processing.
+% Marohn has an outstanding track record of collaborating with theorists, Clancy and Lawler each have an outstanding track record of collaborating with experimentalists, and the Cornell and DOE NREL teams already have an excellent working relationship.
+
+% \section{DOE relevance}
+
+% Metal halide perovskite (MHP) semiconductors enable low-cost, reel-to-reel manufacturing of thin-film semiconductors for use as photodetectors, thin-film transistors, solar cells, photocatalyts (for solar fuel production), and low-energy neuromorphic and spintronic computing elements.
+% These materials applications are directly relevant to U.S. dominance in the energy, quantum technology, and advanced manufacturing sectors.
+
+% REFERENCES
+
+\appendix
+\renewcommand{\thesection}{}
+\renewcommand\thesubsection{A\arabic{section}.\Alph{subsection}}
+\renewcommand\thesubsubsection{A\arabic{section}.\Alph{subsection}.\arabic{subsubsection}}
+\titleformat{\section}
+	{\Large\bfseries\sffamily\raggedright}{}
+	{0pt}{}[\titlerule]
+%\renewcommand\addchaptertocentry[2]{\addtocentrydefault{section}{}{#2}}
+
+\myclearpage
+\setcounter{page}{1} % reset page counter
+\renewcommand*{\thepage}{A\arabic{page}}
+\section{Appendix 1: Cited References}
+\def\bibsection{} % kill the line
+\renewcommand*{\bibfont}{\raggedright}
+\bibliography{%
+    bib/2025-10-31--DOE-NREL-Cornell--white-paper.bib,%
+    bib/bios.bib,%
+    bib/Estroff202106-DOE-data-science.bib,%
+    bib/jam99_.bib,%
+    bib/jam99.bib,%
+    bib/main.bib,%
+    bib/perovskite-crystal-interferometry.bib,%
+    bib/Marohn202604--DOE-Genesis--1-B_RW.bib%
+}
+\bibliographystyle{bst/grants-NIH}
+
+% SUPPORTING DOCS
+
+% \myclearpage
+% \setcounter{page}{1} % reset page counter
+% \subfile{tex/SI-equipment-and-facilities}
+% \myclearpage
+% \stepcounter{section}
+% \subfile{tex/SI-data-management-plan}
+% \myclearpage
+% \subfile{tex/SI-collab-letters}
+
+\end{document}

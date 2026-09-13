@@ -1,0 +1,69 @@
+# IGNORE LATEX WORKING FILES
+
+*.aux
+*.bak
+*.bbl
+*.blg
+/*.bst
+*.dvi
+*.fff
+*.fgx
+*.lof
+*.log
+*.lot
+*.mp
+*.out
+/*.pdf
+*.sav
+*.spl
+*.synctex.gz
+*.tbx
+*.toc
+*.top
+*.tui
+*.vdx
+
+# IGNORE Latexmk
+*.fdb_latexmk
+*.fls
+
+# IGNORE MATLAB data and MATHEMATICA and ADOBE ILLUDSTRATOR
+
+# ignore matlab temp asv backup files
+**.asv
+# ignore matlab temporary backup files
+**.m~
+# ignore Adobe Illustrator
+**.ai
+
+# Ignore compiled python files
+**.pyc
+**.pyd
+**.pyo
+
+# IGNORE MICROSOFT FILES
+
+**.xls
+**.xlsx
+**.doc
+**.docx
+**.ppt
+**.pptx
+
+
+# ANNOYING FILES
+
+# A hidden file created by the Mac OS X Finder.
+**.DS_Store
+# Another annoying hidden file
+**.dropbox
+# Another annoying file
+Icon?
+# Ignore shortcuts
+**.lnk
+
+
+# THIS GRANT
+
+**.odt
+**.pdf

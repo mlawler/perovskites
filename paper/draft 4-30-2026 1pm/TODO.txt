@@ -1,0 +1,8 @@
+To do list:
+
+- [ ] Make sure the narrative discusses both spin casting and evaporation and NLR.
+- [ ] Add pdf versions of all figures, esp perovskite_space_v2.png
+- [ ] Do we make samples at Cornell, via spin casting, too?
+
+Done list:
+

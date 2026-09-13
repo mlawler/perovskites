@@ -1,0 +1,113 @@
+\documentclass[../main.tex]{subfiles}
+
+
+% The project summary/abstract is a summary of the proposed activity suitable for distribution to the public and sufficient to permit potential reviewers to identify conflicts of interest. It must be a self-contained document. The project summary/abstract must be comprised of:
+%
+% - The project title, application stage (Phase II), the PI name and the PI’s institutional affiliation, and any coinvestigators and their institutional affiliations. This information will not count toward the abstract’s one-page limit.
+%
+% - This information must be followed by a statement of the project’s vision for the science and applied energy initiatives that will be pursed and a description of how and why AI will enhance the associated scientific and technical workflows.
+%
+% - The description of the proposed research may not exceed one page (excluding Project Title and list of investigators) when printed using standard letter-size (8.5-inch x 11-inch) paper with one-inch margins (top, bottom, left, and right). The body text font must not be smaller than 11 point. Figures and references, if included, must fit within the one-page limit.
+%
+% If an application is recommended for award, the project summary will be used in preparing a public abstract about the award.
+
+\begin{document}
+
+\thispagestyle{empty}
+% \mnote{1 page}
+
+\begin{center}
+{
+  \large
+  \textbf{AI-Driven Materials Discovery to Power the Space Economy}
+} 
+\vspace{6pt} \\
+Phase I DOE Genesis Mission proposal \\
+1-B  Reenvisioning Advanced Manufacturing and Industrial Productivity | AI-Driven Materials Processing
+\end{center}
+
+
+\vspace{-6pt}
+
+\begin{center}
+\begin{tabular}{rl}
+\toprule
+\textbf{Institution} & \textbf{Personnel} \\
+\midrule
+Cornell University &  John Marohn (director), Michael Lawler  \\
+Johns Hopkins University &  Paulette Clancy \\ 
+National Laboratory of the Rockies & Robert Witteck, Lance Wheeler  \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{6pt}
+
+% - Vision
+% - The Manufacturing Bottleneck
+% - AI 
+% - AI Advantage
+% - Genesis Mission Integration
+% - Expected Outcome
+
+\paragraph{The Vision} 
+The goal of this Phase I DOE Genesis proposal is to use artificial intelligence (AI) and machine learning (ML) predictions in a closed loop with material property measurements to dramatically accelerate the development of radiation-hard semiconductors for space-power applications.  
+
+\paragraph{The Opportunity}
+Metal halide perovskite semiconductors can withstand a proton dosage three orders of magnitude higher than that of silicon, are lighter, and are made from more readily available elements than gallium-arsenide based semiconductors, which makes them a promising material for space-power generation. Optimizing metal halide perovskite semiconductors for deployment in space is daunting given the exponentially large number of possible stoichiometries and processing variables.
+We will capitalize on recent breakthroughs in AI and ML, non-contact measurements of ionic vacancy conductivity, and high-speed robotic synthesis to dramatically accelerate the development of radiation-hard metal halide perovskite semiconductors for space-power applications.
+Besides, evaporative deposition opens up exciting opportunities for fabricating these semiconductors directly in space.
+
+\paragraph{Artificial Intelligence}
+The team will prepare  metal halide perovskite materials by spin casting and vacuum evaporation and will iteratively evolve the materials for radiation hardness using a robust Bayesian optimization approach.
+Model inputs will include not only processing parameters and stoichiometry, but also experimental measurements of material properties --- film morphology, atomic lattice spacing, and steady-state and transient electronic and ionic conductivity.
+We will develop transfer models which will enable us to extract information from imaging and spectroscopy data for use in Bayesian optimization.
+Finally, machine learning will be used to develop a predictive model of radiation damage in metal halide perovskite semiconductors, a digital twin that will be iteratively refined by comparing to experiment.
+In summary, we will develop artificial intelligence models that integrate datasets from multi-modal synthesis, characterization, and fabrication techniques with high-throughput simulations and
+predictive theory.
+
+\paragraph{Artificial Intelligence Advantage}
+Our team's experience in closed-loop discovery suggests that Bayesian optimization using a physics-informed surrogate model will need to search $\leq \! 15$\% of chemical and processing space to find a material with optimum radiation hardness.
+If our radiation-hardness model proves to be as accurate as expected, finding an optimal material should require exploring $\leq \! 1$\% of the search space.
+A quantitative metric for artificial intelligence advantage in manufacturing will be developed by comparing results to established Design of Experiment optimization protocols.
+
+\paragraph{Genesis Mission Integration}
+The team will harness the American Science Cloud
+(\href{https://amsc.energy.gov/}{AmSC}) 
+to disseminate their AI-driven material characterization and property optimization protocols.
+They will team with the Transformational AI Models Consortium 
+(\href{https://www.anl.gov/genesis-mission}{ModCon})
+to share their experience with related projects to speed breakthroughs in advanced manufacturing nationwide.
+
+\paragraph{Expected Outcome}
+By the end of Phase I, the team will have tested the hypothesis that  including multi-modal measurements of material properties in a surrogate model significantly reduces the number of terrestrial radiation-hardness experiments required to optimize metal halide perovskites.
+This reduction will, in turn, lower the number of expensive orbital tests needed to optimize materials for space-power applications.
+
+
+
+
+% Here are the AI methods we have discussed:
+% \begin{itemize}
+%     \item PAL 2.0. Clancy group's Bayesian optimization code base and feature engineering front end. 
+%     \item Fine-tuning MACE (Message Passing Atomic Cluster Expansion) foundation models. Here we take a MACE model (a 5M parameter model) trained on crystal structures. We fine tune it to understand our crystals both damaged and as grown. -- \textcolor{red}{Not sure if this is meant to be Michael's or mine so I have put my version below} 
+%     \item DUAL-X, Dual-Level Explainability Framework, unites two perspectives: model-centric identifying on which atoms and local environments should the model focus its attention and a human-centric level revealing which physically meaningful interactions it prioritizes. Implemented with Grad-CAM for spatial attribution and SHAP-on-SOAP for physical interpretation, DUAL-X provides a general, human-in-the-loop paradigm for interpretable scientific AI.
+%     \item Training a domain-specific Graph Neural Network on radiation damage in elemental metals captured by the CascadesDB (a 240 GB dataset from molecular dynamics of radiation damage in elemental metals) and fine tuning it to predict radiation on the perovskites. 
+%     \item Training a transformer model on growth formulations aiming to predict conductivity. We will fine-tune from the dataset of high ionic conductivity polymers synthesis 
+% \end{itemize}
+
+
+% \todo{Michael, John}{Quantify the AI advantage}
+% PC wrote: Our experiences in closed-loop discovery suggest that a Bayesian optimization using a physics-informed surrogate model will search 15\% or less  of parameter space to find its target. If the model proves to be accurate, it can find a solution in 1\% of the search space.
+% For foundation models, the advantage is less related to performance than possibility. These machine learned interatomic models can make it possible to study system behavior quite accurately that would be impossible (from a resource use perspective) to simulate using accurate quantum mechanical approaches and impossible from an accuracy point of view for a reactive semi-empirical force field. 
+
+% \todo{John}{Connect to the Genesis Mission infrastructure (see text below)}
+
+% The proposed work will harness the American Science Cloud
+% (\href{https://amsc.energy.gov/}{AmSC}) 
+% to disseminate their AI-driven material characterization and property optimization protocols.
+
+% The proposers will team with the Transformational AI Models Consortium 
+% (\href{https://www.anl.gov/genesis-mission}{ModCon})
+% to share their experience with related projects to speed breakthroughs in advanced manufacturing.
+
+\end{document}

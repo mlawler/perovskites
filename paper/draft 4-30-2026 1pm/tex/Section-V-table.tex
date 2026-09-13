@@ -1,0 +1,42 @@
+\documentclass[../main.tex]{subfiles}
+\usepackage{booktabs}
+\begin{document}
+\sloppy
+
+\begin{table}
+\small
+\centering
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{clllc}
+\toprule
+\textbf{Information} & \textbf{Measurement} & \textbf{Acronym} & \textbf{Data Produced} & \textbf{Type} \\
+\midrule
+structural and & optical microscopy & --- & coverage, grain size (\SI{10}{\micro\meter} to \SI{1}{\centi\meter}) & V \\
+ morphological  & scanning electron microscopy & SEM & coverage, grain size (\SI{10}{\nano\meter} to \SI{10}{\micro\meter}) & I \\
+ & X-ray diffraction & XRD & interatomic spacing & I \\ \midrule
+ 
+chemical & energy-dispersive X-ray spectroscopy & EDX & stoichiometry & V \\ \midrule
+ 
+ optoelectronic & optical absorption spectroscopy & UV-Vis &  bandgap, composition & V \\ 
+ properties & spectrally resolved photoluminescence & SRPL & bandgap, composition, defects, traps & V \\
+  (steady state) & microwave conductivity & MC & conductivity $\sigma_{\mathrm{el}} = \mu_n n + \mu_p  p$ & S \\
+  & broadband local dielectric spectroscopy & BLDS & $(\sigma_{\mathrm{el}}, \rho_{\mathrm{el}})$ and $(\sigma_{\mathrm{ion}}, \rho_{\mathrm{ion}})$ & S \\ \midrule
+
+optoelectronic & time-resolved photoluminescence & tr-PL & photon emission rate $\propto n(t) \, p(t)$ & S \\
+properties  & time-resolved microwave conductivity & TRMC & conductivity $\sigma_{\mathrm{el}}(t) = \mu_n n(t) + \mu_p  p(t)$ & S \\
+ (transient)  & phase-kick electric force microscopy & pk-EFM & charge density $\rho_{\mathrm{el}}(t)$ & S \\
+    & non-contact friction versus time & nc-FvT & conductivity $\sigma_{\mathrm{ion}}(t)$ & S \\
+  \bottomrule
+\end{tabular}
+\caption{Data sources.  Here 
+  $n$ and $p$ are electron and hole concentration;
+  $\mu_n$ and $\mu_p$ are electron and hole mobility;
+  $\sigma_{\mathrm{el}}$ and $\sigma_{\mathrm{ion}}$ are electronic and ionic conductivity; and  
+  $\rho_{\mathrm{el}}$ and $\rho_{\mathrm{ion}}$ are electronic and ionic charge concentration.
+  The right-hand column indicates whether data is an image (I, thousands of points), a vector (V, hundreds of points), or a scalar (S, a single point or a few points).}
+\label{table:sources}
+\end{table}
+
+
+
+\end{document}
